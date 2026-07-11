@@ -1,0 +1,792 @@
+/* ============================================
+   GLOBAL RESET & VARIABLES
+   ============================================ */
+:root {
+  --bg-primary: #07070e;
+  --bg-secondary: #0d0d18;
+  --bg-card: rgba(20, 15, 35, 0.7);
+  --border-color: rgba(255, 45, 85, 0.25);
+  --text-primary: #f0eaff;
+  --text-muted: #9a8ab5;
+  --accent-red: #ff2d55;
+  --accent-orange: #ff6b35;
+  --accent-glow: 0 0 40px rgba(255, 45, 85, 0.3);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: radial-gradient(circle at 10% 20%, #1f0a2a 0%, transparent 45%),
+              radial-gradient(circle at 90% 80%, #2a0f1a 0%, transparent 50%),
+              var(--bg-primary);
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent-red);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: #ff85a8;
+}
+
+/* ============================================
+   НАВИГАЦИЯ
+   ============================================ */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 32px;
+  background: rgba(7, 7, 14, 0.85);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.logo {
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 45, 85, 0.3);
+}
+.logo span {
+  background: linear-gradient(135deg, var(--accent-red), var(--accent-orange));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 0 4px;
+}
+.nav nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.nav nav a {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 14px;
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
+}
+.nav nav a:hover {
+  color: #fff;
+  border-bottom-color: var(--accent-red);
+}
+.nav .cta {
+  background: linear-gradient(135deg, var(--accent-red), var(--accent-orange));
+  color: #fff !important;
+  padding: 8px 20px;
+  border-radius: 40px;
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 0 25px -4px var(--accent-red);
+}
+.nav .admin-btn {
+  background: linear-gradient(135deg, #f59e0b, #dc2626);
+  color: #fff !important;
+  padding: 6px 16px;
+  border-radius: 40px;
+  font-weight: 700;
+  box-shadow: 0 0 20px -6px #f59e0b;
+}
+.mini-profile {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  padding: 4px 14px 4px 4px;
+  border-radius: 40px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.mini-profile:hover {
+  border-color: var(--accent-red);
+  box-shadow: var(--accent-glow);
+}
+.mini-profile img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2a1547;
+}
+.mini-profile .mp-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+.mini-profile .mp-bal {
+  background: linear-gradient(135deg, var(--accent-red), var(--accent-orange));
+  color: #fff;
+  padding: 2px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.mini-out {
+  color: var(--text-muted) !important;
+  font-size: 18px;
+  padding: 4px 6px;
+}
+
+/* ============================================
+   ОСНОВНОЙ КОНТЕЙНЕР
+   ============================================ */
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+/* ============================================
+   HERO-БЛОК (ГЛАВНАЯ)
+   ============================================ */
+.hero {
+  padding: 30px 0 20px;
+  text-align: center;
+}
+.hero-badge {
+  display: inline-block;
+  padding: 6px 18px;
+  border: 1px solid var(--accent-red);
+  border-radius: 40px;
+  color: var(--accent-red);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: rgba(255, 45, 85, 0.08);
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: 56px;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  margin: 0 0 16px;
+}
+.grad {
+  background: linear-gradient(135deg, var(--accent-red), var(--accent-orange));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.lead {
+  max-width: 680px;
+  margin: 0 auto 28px;
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1.8;
+}
+.hero-cta {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ============================================
+   КНОПКИ
+   ============================================ */
+.btn {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent-red), var(--accent-orange));
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 40px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.25s;
+  box-shadow: 0 4px 20px -6px var(--accent-red);
+}
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 35px -4px var(--accent-red);
+  color: #fff;
+}
+.btn.ghost {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  box-shadow: none;
+  color: var(--text-primary);
+}
+.btn.ghost:hover {
+  border-color: var(--accent-red);
+  box-shadow: var(--accent-glow);
+}
+.btn.sm {
+  padding: 6px 18px;
+  font-size: 13px;
+}
+.btn.danger {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  box-shadow: none;
+}
+
+/* ============================================
+   КАРТОЧКИ (grid3)
+   ============================================ */
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin: 40px 0;
+}
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px 20px;
+  transition: transform 0.25s, box-shadow 0.25s;
+  box-shadow: 0 8px 30px -12px rgba(0,0,0,0.6);
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--accent-glow);
+}
+.card-icon {
+  font-size: 34px;
+  margin-bottom: 10px;
+}
+.card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: #fff;
+}
+.card p {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin: 0 0 14px;
+}
+.card-link {
+  font-weight: 600;
+  color: var(--accent-red);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.card-link:hover { color: #ff85a8; }
+
+/* ============================================
+   ПАНЕЛИ (общие блоки)
+   ============================================ */
+.panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 8px 30px -12px rgba(0,0,0,0.5);
+}
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.panel-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+/* ============================================
+   ТОП-ЛИСТ
+   ============================================ */
+.toplist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.toplist li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255, 45, 85, 0.04);
+  margin-bottom: 6px;
+  transition: background 0.15s;
+}
+.toplist li:hover {
+  background: rgba(255, 45, 85, 0.08);
+}
+.toplist img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2a1547;
+}
+.toplist .name {
+  flex: 1;
+  font-weight: 600;
+}
+.toplist .rt {
+  color: var(--accent-red);
+  font-weight: 800;
+  font-size: 16px;
+}
+
+/* ============================================
+   МИНИ-ОТЗЫВЫ
+   ============================================ */
+.review-list {
+  display: grid;
+  gap: 12px;
+}
+.review-mini {
+  background: rgba(0,0,0,0.25);
+  border-radius: 12px;
+  padding: 12px 16px;
+  border-left: 4px solid var(--accent-red);
+}
+.review-mini .rh {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.review-mini p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ============================================
+   СЕТКА 2 КОЛОНКИ
+   ============================================ */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 20px 0;
+}
+@media (max-width: 800px) {
+  .grid2 { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 36px; }
+  .nav { padding: 10px 16px; flex-wrap: wrap; }
+  .nav nav { gap: 10px; }
+}
+
+/* ============================================
+   КОНФИГИ (карточки)
+   ============================================ */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+.cfg {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.cfg:hover {
+  border-color: var(--accent-red);
+  box-shadow: var(--accent-glow);
+}
+.cfg-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cfg-head h3 {
+  font-size: 17px;
+  margin: 0;
+}
+.price {
+  background: linear-gradient(135deg, var(--accent-red), var(--accent-orange));
+  color: #fff;
+  padding: 2px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.cfg p {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin: 0;
+  flex: 1;
+}
+.cfg-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.muted {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ============================================
+   ТАБЛИЦА РЕЙТИНГА (новая стилизация)
+   ============================================ */
+.table {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+.tr {
+  display: grid;
+  grid-template-columns: 80px 1fr 100px;
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.2);
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+.tr.th {
+  background: rgba(255, 45, 85, 0.08);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+.tr .player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tr .player img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2a1547;
+}
+.badge {
+  padding: 4px 12px;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #000;
+}
+.badge.gold {
+  background: linear-gradient(135deg, #facc15, #f59e0b);
+}
+.badge.silver {
+  background: linear-gradient(135deg, #e2e8f0, #94a3b8);
+}
+.badge.bronze {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+}
+
+/* ============================================
+   ПРОЧИЕ ЭЛЕМЕНТЫ
+   ============================================ */
+.flash {
+  padding: 12px 18px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  border: 1px solid;
+}
+.flash.ok {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: #22c55e;
+  color: #86efac;
+}
+.flash.err {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+.prose {
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  padding: 24px;
+  border-radius: 14px;
+  line-height: 1.8;
+}
+
+/* ============================================
+   АВТОРИЗАЦИЯ / ФОРМЫ
+   ============================================ */
+.auth {
+  max-width: 400px;
+  margin: 60px auto;
+}
+.auth h1 {
+  text-align: center;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 520px;
+}
+.form.row {
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+.form.row input { flex: 1; }
+.form input, .form textarea, .form select {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.form input:focus, .form textarea:focus {
+  outline: none;
+  border-color: var(--accent-red);
+  box-shadow: 0 0 20px -4px rgba(255, 45, 85, 0.2);
+}
+.form textarea { min-height: 80px; resize: vertical; }
+.form label { color: var(--text-muted); font-size: 13px; }
+
+/* ============================================
+   КАБИНЕТ
+   ============================================ */
+.cab-head {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 24px 28px;
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+}
+.ava-lg {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2a1547;
+  border: 3px solid var(--accent-red);
+}
+.stats {
+  display: flex;
+  gap: 28px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.stats>div {
+  display: flex;
+  flex-direction: column;
+}
+.stats span {
+  color: var(--text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.stats b {
+  font-size: 24px;
+}
+
+/* ============================================
+   АДМИНКА
+   ============================================ */
+.admin-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+.admin-row .ava {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2a1547;
+}
+.inline {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  margin: 0;
+}
+.inline input {
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 8px;
+  width: auto;
+  max-width: 120px;
+}
+.keys {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+.key {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 8px 14px;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+.key.used { opacity: 0.5; }
+.key code {
+  background: rgba(0,0,0,0.3);
+  padding: 4px 12px;
+  border-radius: 6px;
+  color: var(--accent-red);
+  font-weight: 700;
+}
+
+/* ============================================
+   ТУРНИРЫ
+   ============================================ */
+.date-big {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-red);
+  color: var(--accent-red);
+  padding: 8px 18px;
+  border-radius: 40px;
+  display: inline-block;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+.ch-cta { margin: 20px 0; }
+.badge-ok {
+  display: inline-block;
+  background: rgba(34, 197, 94, 0.15);
+  color: #86efac;
+  border: 1px solid #22c55e;
+  padding: 10px 20px;
+  border-radius: 40px;
+  font-weight: 700;
+}
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+}
+.pcard {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.pcard img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2a1547;
+  border: 2px solid var(--accent-red);
+}
+.bracket {
+  display: grid;
+  gap: 12px;
+  max-width: 600px;
+}
+.match {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 18px;
+}
+.match .vs {
+  color: var(--accent-red);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+/* ============================================
+   ОТЗЫВЫ
+   ============================================ */
+.reviews {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+.review {
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+.rh {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  color: var(--accent-red);
+}
+
+/* ============================================
+   ФУТЕР
+   ============================================ */
+footer {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-color);
+  margin-top: 60px;
+  font-size: 14px;
+}
+
+/* ============================================
+   УТИЛИТЫ
+   ============================================ */
+h1 {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0 0 20px;
+}
+.admin-tag {
+  background: linear-gradient(135deg, #f59e0b, #dc2626);
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}

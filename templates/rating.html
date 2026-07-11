@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>🏅 Рейтинг игроков</h1>
+<div class="table">
+  <div class="tr th">
+    <div>#</div>
+    <div>Игрок</div>
+    <div>Рейтинг</div>
+  </div>
+  {% for u in users %}
+  <div class="tr">
+    <div class="pos">
+      {% if loop.index == 1 %}<span class="badge gold">TOP 1</span>
+      {% elif loop.index == 2 %}<span class="badge silver">TOP 2</span>
+      {% elif loop.index == 3 %}<span class="badge bronze">TOP 3</span>
+      {% else %}#{{ loop.index }}{% endif %}
+    </div>
+    <div class="player">
+      <img src="{{ url_for('static', filename='uploads/avatars/' + u['avatar']) if u['avatar'] else url_for('static', filename='default.png') }}" onerror="this.src='{{ url_for('static', filename='default.png') }}'">
+      {{ u['username'] }}
+    </div>
+    <div><strong>{{ u['rating'] }}</strong></div>
+  </div>
+  {% else %}
+  <div class="tr"><div colspan="3" class="muted">Игроков пока нет</div></div>
+  {% endfor %}
+</div>
+{% endblock %}

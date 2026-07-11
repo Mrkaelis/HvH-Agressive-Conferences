@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="cab-head">
+  <h1>⚙ Админ панель</h1>
+  <a class="btn ghost sm" href="{{ url_for('admin_logout') }}">Выйти из админ-сессии</a>
+</div>
+
+<section class="panel">
+  <h2>Чемпионат</h2>
+  <form method="post" action="{{ url_for('admin_championship') }}" class="form">
+    <input name="title" value="{{ ch['title'] or '' }}" placeholder="Название">
+    <input name="date" value="{{ ch['date'] or '' }}" placeholder="Дата (например 15 июля 2026)">
+    <textarea name="description" rows="4">{{ ch['description'] or '' }}</textarea>
+    <button class="btn">Сохранить</button>
+  </form>
+  <h3>Участники ({{ ch_players|length }})</h3>
+  <div class="admin-list">
+    {% for p in ch_players %}
+    <div class="admin-row">
+      <b>{{ p['username'] }}</b>
+      <form method="post" action="{{ url_for('admin_ch_kick', pid=p['pid']) }}" class="inline">
+        <button class="btn sm danger">Убрать</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+  <form method="post" action="{{ url_for('admin_ch_clear') }}" class="inline" style="margin-top:10px">
+    <button class="btn sm danger" onclick="return confirm('Очистить всех участников?')">Очистить всех</button>
+  </form>
+</section>
+
+<section class="panel">
+  <h2>Админы по email</h2>
+  <form method="post" action="{{ url_for('admin_email_add') }}" class="form row">
+    <input type="email" name="email" placeholder="user@mail.com" required>
+    <button class="btn">Добавить админа</button>
+  </form>
+  <div class="admin-list">
+    {% for e in admin_emails %}
+    <div class="admin-row">
+      <b>{{ e['email'] }}</b>
+      <form method="post" action="{{ url_for('admin_email_del', eid=e['id']) }}" class="inline">
+        <button class="btn sm danger">×</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+  <p class="muted">При регистрации/входе пользователи с этими email автоматически получают доступ к админ панели.</p>
+</section>
+
+<section class="panel">
+  <h2>Тексты сайта</h2>
+  <form method="post" action="{{ url_for('admin_text') }}" class="form">
+    <label>Приветствие на главной</label>
+    <textarea name="welcome" rows="4">{{ welcome }}</textarea>
+    <label>О HvH</label>
+    <textarea name="about" rows="6">{{ about }}</textarea>
+    <button class="btn">Сохранить</button>
+  </form>
+</section>
+
+<section class="panel">
+  <h2>Пользователи</h2>
+  {% for u in users %}
+  <div class="admin-row">
+    <img class="ava" src="{{ url_for('static', filename='uploads/avatars/' + u['avatar']) if u['avatar'] else url_for('static', filename='default.png') }}" onerror="this.src='{{ url_for('static', filename='default.png') }}'">
+    <b>{{ u['username'] }}</b>
+    {% if u['is_admin'] %}<span class="admin-tag">ADMIN</span>{% endif %}
+    <span class="muted">{{ u['email'] or '—' }} · Р:{{ u['rating'] }} · {{ u['balance'] }}₽</span>
+    <form method="post" action="{{ url_for('admin_user', uid=u['id']) }}" class="inline">
+      <input type="hidden" name="action" value="rating">
+      <input type="number" name="rating" value="{{ u['rating'] }}"><button class="btn sm">Рейтинг</button>
+    </form>
+    <form method="post" action="{{ url_for('admin_user', uid=u['id']) }}" class="inline">
+      <input type="hidden" name="action" value="balance">
+      <input type="number" name="balance" value="{{ u['balance'] }}"><button class="btn sm">Баланс</button>
+    </form>
+    <form method="post" action="{{ url_for('admin_user', uid=u['id']) }}" enctype="multipart/form-data" class="inline">
+      <input type="hidden" name="action" value="avatar">
+      <input type="file" name="avatar"><button class="btn sm">Аватар</button>
+    </form>
+    <form method="post" action="{{ url_for('admin_user', uid=u['id']) }}" class="inline">
+      <input type="hidden" name="action" value="toggle_admin">
+      <button class="btn sm">{{ 'Снять админа' if u['is_admin'] else 'Сделать админом' }}</button>
+    </form>
+    <form method="post" action="{{ url_for('admin_user', uid=u['id']) }}" class="inline">
+      <input type="hidden" name="action" value="delete">
+      <button class="btn sm danger" onclick="return confirm('Удалить?')">×</button>
+    </form>
+  </div>
+  {% endfor %}
+</section>
+
+<section class="panel">
+  <h2>Ключи пополнения</h2>
+  <form method="post" action="{{ url_for('admin_key_new') }}" class="form row">
+    <input type="number" name="amount" min="1" placeholder="Сумма ₽" required>
+    <input type="number" name="count" min="1" max="100" value="1" placeholder="Кол-во">
+    <button class="btn">Сгенерировать</button>
+  </form>
+  <div class="keys">
+    {% for k in keys %}
+    <div class="key {{ 'used' if k['used_by'] else '' }}">
+      <code>{{ k['code'] }}</code>
+      <span>{{ k['amount'] }}₽</span>
+      <span class="muted">{{ 'использован: ' + k['user'] if k['used_by'] else 'свободен' }}</span>
+      {% if not k['used_by'] %}
+      <form method="post" action="{{ url_for('admin_key_del', kid=k['id']) }}" class="inline">
+        <button class="btn sm danger">×</button>
+      </form>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Добавить конфиг</h2>
+  <form method="post" action="{{ url_for('admin_config_new') }}" enctype="multipart/form-data" class="form">
+    <input name="title" placeholder="Название" required>
+    <textarea name="description" placeholder="Описание"></textarea>
+    <input type="number" name="price" min="0" placeholder="Цена ₽" required>
+    <input type="file" name="file" required>
+    <button class="btn">Загрузить</button>
+  </form>
+  <h3>Все конфиги</h3>
+  {% for c in configs %}
+  <div class="admin-row">
+    <b>{{ c['title'] }}</b><span>{{ c['price'] }}₽</span>
+    <span class="muted">{{ c['seller'] or 'admin' }}</span>
+    <form method="post" action="{{ url_for('admin_config_del', cid=c['id']) }}" class="inline">
+      <button class="btn sm danger" onclick="return confirm('Удалить?')">×</button>
+    </form>
+  </div>
+  {% endfor %}
+</section>
+
+<section class="panel">
+  <h2>Отзывы</h2>
+  {% for r in reviews %}
+  <div class="admin-row">
+    <b>{{ r['username'] }}</b><span>{{ '★'*r['rating'] }}</span>
+    <span class="muted">{{ r['text'][:100] }}</span>
+    <form method="post" action="{{ url_for('admin_review_del', rid=r['id']) }}" class="inline">
+      <button class="btn sm danger">×</button>
+    </form>
+  </div>
+  {% endfor %}
+</section>
+{% endblock %}

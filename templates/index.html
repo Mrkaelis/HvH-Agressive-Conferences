@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero">
+  <div class="hero-badge">⚔️ HvH COMMUNITY</div>
+  <h1>Агрессия. <span class="grad">Точность.</span> Доминирование.</h1>
+  <p class="lead">{{ welcome }}</p>
+  <div class="hero-cta">
+    <a class="btn" href="{{ url_for('championship') }}">🏆 Турнирная сетка</a>
+    <a class="btn ghost" href="{{ url_for('configs') }}">📦 Конфиги</a>
+    <a class="btn ghost" href="{{ url_for('reviews') }}">💬 Отзывы</a>
+    {% if is_admin_user %}<a class="btn admin-btn" href="{{ url_for('admin_panel') }}">⚙ Админка</a>{% endif %}
+  </div>
+</section>
+
+<div class="grid3">
+  <div class="card card-glow">
+    <div class="card-icon">🏟️</div>
+    <h3>Турниры</h3>
+    <p>{% if ch and ch['date'] %}Ближайший: <b>{{ ch['date'] }}</b>{% else %}Сетка и регистрация{% endif %}</p>
+    <a class="card-link" href="{{ url_for('championship') }}">Подробнее →</a>
+  </div>
+  <div class="card card-glow">
+    <div class="card-icon">📂</div>
+    <h3>Конфиги</h3>
+    <p>Покупай и продавай конфиги за баланс.</p>
+    <a class="card-link" href="{{ url_for('configs') }}">Смотреть →</a>
+  </div>
+  <div class="card card-glow">
+    <div class="card-icon">👥</div>
+    <h3>Комьюнити</h3>
+    <p>Рейтинг, отзывы, личные кабинеты.</p>
+    <a class="card-link" href="{{ url_for('rating') }}">Рейтинг →</a>
+  </div>
+</div>
+
+<section class="panel">
+  <div class="panel-header">
+    <h2>🔥 Свежие конфиги</h2>
+    <a href="{{ url_for('configs') }}" class="btn sm ghost">Все →</a>
+  </div>
+  <div class="cards">
+    {% for c in recent_configs %}
+    <div class="cfg">
+      <div class="cfg-head">
+        <h3>{{ c['title'] }}</h3>
+        <div class="price">{{ c['price'] }}₽</div>
+      </div>
+      <p>{{ c['description'][:60] + '…' if c['description'] else '' }}</p>
+      <div class="cfg-foot">
+        <span class="muted">👤 {{ c['seller'] or 'Admin' }}</span>
+        <a class="btn sm" href="{{ url_for('configs') }}">Купить</a>
+      </div>
+    </div>
+    {% else %}
+    <p class="muted">Конфигов пока нет.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="grid2">
+  <section class="panel">
+    <div class="panel-header">
+      <h2>🏅 Топ-5 сцены</h2>
+      <a href="{{ url_for('rating') }}" class="btn sm ghost">Все →</a>
+    </div>
+    <ol class="toplist">
+      {% for u in top %}
+      <li>
+        <img src="{{ url_for('static', filename='uploads/avatars/' + u['avatar']) if u['avatar'] else url_for('static', filename='default.png') }}" onerror="this.src='{{ url_for('static', filename='default.png') }}'">
+        <span class="name">{% if loop.index==1 %}👑 {% endif %}{{ u['username'] }}</span>
+        <span class="rt">{{ u['rating'] }}</span>
+      </li>
+      {% else %}
+      <li class="muted">Пока пусто</li>
+      {% endfor %}
+    </ol>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>💬 Последние отзывы</h2>
+      <a href="{{ url_for('reviews') }}" class="btn sm ghost">Все →</a>
+    </div>
+    <div class="review-list">
+      {% for r in recent_reviews %}
+      <div class="review-mini">
+        <div class="rh"><b>{{ r['username'] }}</b><span>{{ '★'*r['rating'] }}</span></div>
+        <p>{{ r['text'][:80] + '…' if r['text']|length > 80 else r['text'] }}</p>
+      </div>
+      {% else %}
+      <p class="muted">Отзывов пока нет.</p>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+{% endblock %}

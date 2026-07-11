@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Отзывы</h1>
+{% if user %}
+<form method="post" class="form">
+  <textarea name="text" required maxlength="1000" placeholder="Ваш отзыв..."></textarea>
+  <label>Оценка: <input type="number" name="rating" min="1" max="5" value="5"></label>
+  <button class="btn">Отправить</button>
+</form>
+{% else %}<p class="muted"><a href="{{ url_for('login') }}">Войди</a>, чтобы оставить отзыв.</p>{% endif %}
+<div class="reviews">
+  {% for r in items %}
+  <div class="review">
+    <div class="rh"><b>{{ r['username'] }}</b><span>{{ '★'*r['rating'] }}</span></div>
+    <p>{{ r['text'] }}</p>
+  </div>
+  {% else %}<p class="muted">Отзывов ещё нет</p>{% endfor %}
+</div>
+{% endblock %}

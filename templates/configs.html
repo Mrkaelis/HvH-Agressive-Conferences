@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Конфиги</h1>
+<div class="cards">
+  {% for c in items %}
+  <div class="cfg">
+    <div class="cfg-head">
+      <h3>{{ c['title'] }}</h3>
+      <div class="price">{{ c['price'] }}₽</div>
+    </div>
+    <p>{{ c['description'] }}</p>
+    <div class="cfg-foot">
+      <span class="muted">Продавец: {{ c['seller'] or 'Admin' }}</span>
+      {% if user %}
+        <form method="post" action="{{ url_for('buy', cid=c['id']) }}"><button class="btn sm">Купить</button></form>
+      {% else %}
+        <a class="btn sm ghost" href="{{ url_for('login') }}">Войти</a>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}<p class="muted">Конфигов пока нет</p>{% endfor %}
+</div>
+{% endblock %}

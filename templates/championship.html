@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ ch['title'] or 'Чемпионат' }}</h1>
+{% if ch['date'] %}<div class="date-big">Дата: <b>{{ ch['date'] }}</b></div>{% endif %}
+<div class="prose">{{ (ch['description'] or '')|replace('\n','<br>')|safe }}</div>
+
+<div class="ch-cta">
+  {% if not user %}
+    <a class="btn" href="{{ url_for('login') }}">Войти чтобы зарегистрироваться</a>
+  {% elif registered %}
+    <div class="badge-ok">✓ Ты зарегистрирован</div>
+  {% else %}
+    <form method="post"><button class="btn">Зарегистрироваться на чемпионат</button></form>
+  {% endif %}
+</div>
+
+<section class="panel">
+  <h2>Участники ({{ players|length }})</h2>
+  <div class="players-grid">
+    {% for p in players %}
+    <div class="pcard">
+      <img src="{{ url_for('static', filename='uploads/avatars/' + p['avatar']) if p['avatar'] else url_for('static', filename='default.png') }}" onerror="this.src='{{ url_for('static', filename='default.png') }}'">
+      <b>{{ p['username'] }}</b>
+      <span class="muted">rating {{ p['rating'] }}</span>
+    </div>
+    {% else %}<p class="muted">Пока никто не зарегистрирован</p>{% endfor %}
+  </div>
+</section>
+
+{% if pairs %}
+<section class="panel">
+  <h2>Сетка (кто против кого)</h2>
+  <div class="bracket">
+    {% for a,b in pairs %}
+    <div class="match">
+      <div class="side">{{ a['username'] if a else '—' }}</div>
+      <div class="vs">VS</div>
+      <div class="side">{{ b['username'] if b else 'BYE' }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="cab-head">
+  <img class="ava-lg" src="{{ url_for('static', filename='uploads/avatars/' + me['avatar']) if me['avatar'] else url_for('static', filename='default.png') }}" onerror="this.src='{{ url_for('static', filename='default.png') }}'">
+  <div style="flex:1">
+    <h1>{{ me['username'] }} {% if me['is_admin'] %}<span class="admin-tag">ADMIN</span>{% endif %}</h1>
+    <div class="muted">{{ me['email'] }}</div>
+    <div class="stats">
+      <div><span>Рейтинг</span><b>{{ me['rating'] }}</b></div>
+      <div><span>Место</span><b>#{{ place }}</b></div>
+      <div><span>Баланс</span><b class="grad">{{ me['balance'] }}₽</b></div>
+    </div>
+  </div>
+  <form method="post" action="{{ url_for('cab_avatar') }}" enctype="multipart/form-data" class="inline">
+    <input type="file" name="avatar" required>
+    <button class="btn sm">Сменить аватар</button>
+  </form>
+</div>
+
+<div class="grid2">
+  <section class="panel">
+    <h2>Активировать ключ</h2>
+    <form method="post" action="{{ url_for('redeem') }}" class="form row">
+      <input name="code" placeholder="HVH-XXXXXXXXXX" required>
+      <button class="btn">Пополнить</button>
+    </form>
+    <p class="muted">Ключи создаёт админ. Каждый ключ = фиксированная сумма на баланс.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Топ-5 HvH</h2>
+    <ol class="toplist">
+      {% for u in top %}
+      <li>
+        <img src="{{ url_for('static', filename='uploads/avatars/' + u['avatar']) if u['avatar'] else url_for('static', filename='default.png') }}" onerror="this.src='{{ url_for('static', filename='default.png') }}'">
+        <span class="name">{% if loop.index==1 %}👑 TOP 1 · {% endif %}{{ u['username'] }}</span>
+        <span class="rt">{{ u['rating'] }}</span>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+</div>
+
+<section class="panel">
+  <h2>Продать конфиг</h2>
+  <form method="post" action="{{ url_for('sell_config') }}" enctype="multipart/form-data" class="form">
+    <input name="title" placeholder="Название конфига" required>
+    <textarea name="description" placeholder="Описание"></textarea>
+    <input type="number" name="price" min="0" placeholder="Цена ₽" required>
+    <input type="file" name="file" required>
+    <button class="btn">Выставить на продажу</button>
+  </form>
+  <h3>Мои конфиги</h3>
+  <div class="cards">
+    {% for c in my_configs %}
+    <div class="cfg">
+      <div class="cfg-head"><h3>{{ c['title'] }}</h3><div class="price">{{ c['price'] }}₽</div></div>
+      <p>{{ c['description'] }}</p>
+      <a class="btn sm ghost" href="{{ url_for('download', cid=c['id']) }}">Скачать</a>
+    </div>
+    {% else %}<p class="muted">Ты ещё ничего не продаёшь</p>{% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Купленные конфиги</h2>
+  <div class="cards">
+    {% for c in purchased %}
+    <div class="cfg">
+      <div class="cfg-head"><h3>{{ c['title'] }}</h3></div>
+      <p>{{ c['description'] }}</p>
+      <a class="btn sm" href="{{ url_for('download', cid=c['id']) }}">Скачать</a>
+    </div>
+    {% else %}<p class="muted">Пока ничего не куплено</p>{% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>О HvH</h1>
+<div class="prose">{{ content|replace('\n','<br>')|safe }}</div>
+{% endblock %}
